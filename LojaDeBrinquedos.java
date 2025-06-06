@@ -1,13 +1,11 @@
-package com.mycompany.lojadebrinquedos;
+package lojadebrinquedos;
 
 import java.util.Scanner;
 
-// Interface do brinquedo
 interface Brinquedo {
     void brincar();
 }
 
-// Implementações dos brinquedos
 class Ursinho implements Brinquedo {
     public void brincar() {
         System.out.println("Abraçando o ursinho!");
@@ -32,7 +30,41 @@ class Boneca implements Brinquedo {
     }
 }
 
-public class LojaDeBrinquedos {
+abstract class FabricaBrinquedo {
+    public abstract Brinquedo criarBrinquedo();
+
+    public void entregarBrinquedo() {
+        Brinquedo brinquedo = criarBrinquedo();
+        System.out.println("Entregando brinquedo:");
+        brinquedo.brincar();
+    }
+}
+
+class FabricaUrsinho extends FabricaBrinquedo {
+    public Brinquedo criarBrinquedo() {
+        return new Ursinho();
+    }
+}
+
+class FabricaCaminhao extends FabricaBrinquedo {
+    public Brinquedo criarBrinquedo() {
+        return new Caminhao();
+    }
+}
+
+class FabricaBola extends FabricaBrinquedo {
+    public Brinquedo criarBrinquedo() {
+        return new Bola();
+    }
+}
+
+class FabricaBoneca extends FabricaBrinquedo {
+    public Brinquedo criarBrinquedo() {
+        return new Boneca();
+    }
+}
+
+public class Lojadebrinquedos {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcao;
@@ -52,28 +84,27 @@ public class LojaDeBrinquedos {
                 break;
             }
 
-            Brinquedo brinquedo = null;
+            FabricaBrinquedo fabrica = null;
 
             switch (opcao) {
                 case 1:
-                    brinquedo = new Ursinho();
+                    fabrica = new FabricaUrsinho();
                     break;
                 case 2:
-                    brinquedo = new Caminhao();
+                    fabrica = new FabricaCaminhao();
                     break;
                 case 3:
-                    brinquedo = new Bola();
+                    fabrica = new FabricaBola();
                     break;
                 case 4:
-                    brinquedo = new Boneca();
+                    fabrica = new FabricaBoneca();
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                     continue;
             }
 
-            System.out.println("Entregando brinquedo:");
-            brinquedo.brincar();
+            fabrica.entregarBrinquedo();
         }
 
         scanner.close();
